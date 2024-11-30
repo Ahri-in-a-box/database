@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="/css/sheets/sheet.css">
+
+<h1>Home</h1>
+<div class="d-flex flex-column" style="gap: 32px;">
+    <div id="filters" class="d-flex justify-content-between">
+        <div class="search-group">
+            <em class="ico ico-search search-icon"></em>
+            <input id="search" type="search" class="search form-control" placeholder="Search.." />
+        </div>
+        <div clas="d-flex" style="gap: 16px;">
+            <button class="btn btn-primary">Add</button>
+        </div>
+    </div>
+    <div id="sheets"></div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        const search = $("#search");
+        const sheets = $("#sheets");
+        
+        function fetchSheets(clear = false) {
+            $.ajax({
+                url: "/Sheets/GetSheets",
+                method: "GET",
+                data: {
+                    search: search.val(),
+                    limit: 10,
+                    last: clear ? null : sheets.children().last().attr("id")
+                },
+                success: function(data) {
+                    sheets[clear ? "html" : "append"](data);
+                },
+                error: function(err) {
+                    console.error(err);
+                }
+            });
+        }
+
+        search.on('change', _ => fetchSheets(true));
+        sheets.on("scroll", function() {
+            if(Math.ceil(this.scrollTop) >= (this.scrollHeight - this.clientHeight)) {
+                fetchSheets(false);
+            }
+        }).trigger("scroll");
+
+        $(sheets).on('click', '[data-link]', function(e) {
+            window.open($(this).data('link'), '_blank', 'noopener');
+        });
+    });
+</script>

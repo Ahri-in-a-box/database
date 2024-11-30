@@ -1,0 +1,12 @@
+<div id="<%= sheet.id %>" class="sheet" data-link="/sheets/<%= sheet.id %>/show">
+    <img src="<%= sheet.image %>" alt="<%= sheet.name %>" class="sheet-image" />
+    <div class="sheet-content d-flex flex-column justify-content-between w-100 h-100">
+        <div class="sheet-buttons p-2">
+            <button class="btn btn-primary"><em class="ico ico-edit"></em></button>
+            <button class="btn btn-danger"><em class="ico ico-delete"></em></button>
+        </div>
+        <div class="sheet-name text-center py-1 px-2">
+            <%= sheet.name %>
+        </div>
+    </div>
+</div>

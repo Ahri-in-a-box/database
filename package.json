@@ -1,0 +1,31 @@
+{
+  "name": "data-storage",
+  "version": "1.0.0",
+  "description": "Store data",
+  "main": "release/index.js",
+  "scripts": {
+    "dev": "tsc && cd release && node --env-file=../.env ./ApplicationWeb/index.js",
+    "build": "tsc",
+    "start": "cd release && node --env-file=../.env ./ApplicationWeb/index.js",
+    "clean": "rm -rf release"
+  },
+  "author": "Demo The Demise/Ahri in a box",
+  "license": "ISC",
+  "dependencies": {
+    "@types/ejs": "^3.1.5",
+    "compression": "^1.7.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "sequelize": "^6.37.2",
+    "serve-static": "^1.16.2",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.5",
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.4",
+    "tsup": "^8.3.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.2"
+  }
+}

@@ -1,0 +1,12 @@
+TODO:
+  ☐ Authentification
+  ☐ Validation query/command
+  ☐ Business
+  ☐ Locale + ressources
+  ☐ ViewModels
+  ☐ Utiliser ejs layout: https://www.npmjs.com/package/express-ejs-layouts + déplacer les scripts
+  ☐ Faire commande pour déplacer les vues & les ressources (non ts) du wwwroot
+  ☐ Algo pour trouver le fichier template
+  Front:
+    ☐ css
+    ☐ revoir html

@@ -1,0 +1,7 @@
+{
+    "port": 80,
+    "httpsPort": 443,
+    "useTls": false,
+    "redirectToHttps": false,
+    "appName": "Database"
+}
