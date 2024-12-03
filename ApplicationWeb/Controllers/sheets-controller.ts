@@ -12,6 +12,9 @@ class SheetsController extends Controller {
     protected readonly routes: RouteDescription[] = [
         new RouteDescription("GET", SheetsController._baseRoute, this.getSheets.bind(this)),
         new RouteDescription("GET", SheetsController._baseRoute + "/getSheets", this.showSheets.bind(this)),
+        new RouteDescription("GET", SheetsController._baseRoute + "/show", this.showSheet.bind(this)),
+        new RouteDescription("GET", SheetsController._baseRoute + "/:sheetId/show", this.showSheet.bind(this)),
+        new RouteDescription("GET", SheetsController._baseRoute + "/:sheetId/content", this.showSheetContent.bind(this)),
         new RouteDescription("GET", SheetsController._baseRoute + "/:sheetId", this.getSheet.bind(this)),
         new RouteDescription("POST", SheetsController._baseRoute, this.createSheet.bind(this)),
         new RouteDescription("PUT", SheetsController._baseRoute, this.createSheet.bind(this)),
@@ -61,9 +64,40 @@ class SheetsController extends Controller {
             last: getSheetCommand.last,
             tags: getSheetCommand.search?.split(" ").map(x => x.trim().toLowerCase())
         });
-        console.log(sheets);
 
         this.partialView(res, "sheets", { sheets: sheets.map(sheet => new SheetViewModel(sheet)) });
+    }
+
+    private async showSheet(req: any, res: any): Promise<void> {
+        const sheetId: string = req.params.sheetId;
+        if(sheetId == null) {
+            this.partialView(res, "show-sheet", { sheet: new SheetViewModel() });
+            return;
+        }
+
+        const sheet: Nullable<Sheet> = await this._sheetsRepository.getSheet(sheetId);
+        if(sheet == null) {
+            res.status(400).send("Sheet not found");
+            return;
+        }
+
+        this.partialView(res, "show-sheet", { sheet: new SheetViewModel(sheet) });
+    }
+
+    private async showSheetContent(req: any, res: any): Promise<void> {
+        const sheetId: string = req.params.sheetId;
+        if(sheetId == null) {
+            res.status(400).send("SheetId must be provided");
+            return;
+        }
+
+        const sheet: Nullable<Sheet> = await this._sheetsRepository.getSheet(sheetId);
+        if(sheet == null) {
+            res.status(400).send("Sheet not found");
+            return;
+        }
+
+        this.view(res, "sheet-content", { sheet: new SheetViewModel(sheet) });
     }
 
     private async getSheet(req: any, res: any): Promise<void> {

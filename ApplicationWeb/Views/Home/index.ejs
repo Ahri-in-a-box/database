@@ -8,11 +8,12 @@
             <input id="search" type="search" class="search form-control" placeholder="Search.." />
         </div>
         <div clas="d-flex" style="gap: 16px;">
-            <button class="btn btn-primary">Add</button>
+            <button class="btn btn-primary" onclick="showSheet();">Add</button>
         </div>
     </div>
-    <div id="sheets"></div>
+    <div id="sheets" class="d-flex flex-wrap" style="gap: 32px 16px;"></div>
 </div>
+<div class="modal fade" id="modal" data-backdrop="static" tabindex="-1" role="dialog" aria-hidden="true"></div>
 
 <script>
     $(document).ready(function() {
@@ -48,4 +49,84 @@
             window.open($(this).data('link'), '_blank', 'noopener');
         });
     });
+
+    function closeModal() {
+        $("#modal").modal("hide");
+    }
+
+    function showSheet(id, event) {
+        event?.stopPropagation();
+
+        $.ajax({
+            url: id ? `/Sheets/${id}/Show` : "/Sheets/Show",
+            method: "GET",
+            success: function(data) {
+                $("#modal").html(data).modal("show");
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    }
+
+    function createSheet() {
+        let data = {};
+        $("#sheet-form [name]").toArray()
+            .forEach(x => data[x.getAttribute("name")] = x.value);
+        data.tags = data.tags.split(',').flatMap(x => x.trim().split(' '))
+            .map(x => x.trim().toLowerCase())
+            .filter(x => x.length > 0);
+
+        $.ajax({
+            url: "/Sheets",
+            method: "PUT",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function(data) {
+                $("#modal").modal("hide");
+                $("#search").trigger("change");
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    }
+
+    function updateSheet() {
+        let data = {};
+        $("#sheet-form [name]").toArray()
+            .forEach(x => data[x.getAttribute("name")] = x.value);
+        data.tags = data.tags.split(',').flatMap(x => x.trim().split(' '))
+            .map(x => x.trim().toLowerCase())
+            .filter(x => x.length > 0);
+
+        $.ajax({
+            url: `/Sheets/${data.id}`,
+            method: "PATCH",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            success: function(data) {
+                $("#modal").modal("hide");
+                $("#search").trigger("change");
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    }
+
+    function deleteSheet(id, event) {
+        event?.stopPropagation();
+
+        $.ajax({
+            url: `/Sheets/${id}`,
+            method: "DELETE",
+            success: function(data) {
+                $("#search").trigger("change");
+            },
+            error: function(err) {
+                console.error(err);
+            }
+        });
+    }
 </script>

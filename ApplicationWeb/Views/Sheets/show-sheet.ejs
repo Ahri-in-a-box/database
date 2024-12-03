@@ -1,0 +1,62 @@
+<style>
+    .modal {
+        --bs-modal-border-radius: 32px;
+        --bs-modal-padding: 24px;
+        --bs-modal-header-padding: 1rem 24px;
+    }
+</style>
+
+<%
+    const submit = sheet.id ? "updateSheet();" : "createSheet();";
+%>
+
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title"><%= sheet.id ? "Modifier la fiche" : "Ajouter une fiche" %></h5>
+        </div>
+        <div class="modal-body">
+            <form id="sheet-form" class="d-flex flex-column gap-3" onsubmit="<%= submit %> return false;">
+                <input id="id" name="id" type="hidden" value="<%= sheet.id %>" />
+                <div class="row">
+                    <div class="col">
+                        <label name="name" for="name" class="form-label">Nom de la fiche</label>
+                        <input id="name" name="name" type="text" class="form-control" placeholder="Nom de votre fiche" value="<%= sheet.name %>" required />
+                    </div>
+                    <div class="col">
+                        <label name="link" for="link" class="form-label">Lien vers la ressource de la fiche</label>
+                        <input id="link" name="link" type="text" class="form-control" placeholder="www.example.com/" value="<%= sheet.link %>" required />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label name="image" for="image" class="form-label">Image de la fiche (URL)</label>
+                        <input id="image" name="image" type="text" class="form-control" placeholder="www.example.com/mon-image.png" value="<%= sheet.image %>" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label name="description" for="description" class="form-label">Description de la fiche</label>
+                        <textarea id="description" name="description" class="form-control" placeholder="Description de votre fiche"><%= sheet.description %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label name="usage" for="usage" class="form-label">Utilisation de la fiche</label>
+                        <textarea id="usage" name="usage" class="form-control" placeholder="Utilisation de votre fiche"><%= sheet.usage %></textarea>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <label name="tags" for="tags" class="form-label">Etiquettes</label>
+                        <textarea id="tags" name="tags" class="form-control" placeholder="etiquette1, etiquette2, etiquette3"><%= sheet.tags?.join(', ') %></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn rounded-pill" data-dismiss="modal" onclick="closeModal();">Annuler</button>
+            <button type="button" class="btn btn-primary rounded-pill" onclick="<%= submit %>">Enregistrer</button>
+        </div>
+    </div>
+</div>

@@ -10,14 +10,14 @@ class SheetViewModel {
     public image: Optional<string>;
     public usage: Optional<string>;
 
-    constructor(sheet: Sheet) {
-        this.id = sheet.id;
-        this.name = sheet.name;
-        this.description = sheet.description;
-        this.tags = sheet.tags?.map(t => t.wording);
-        this.link = sheet.link;
-        this.image = sheet.image;
-        this.usage = sheet.usage;
+    constructor(sheet?: Sheet) {
+        this.id = sheet?.id ?? null!;
+        this.name = sheet?.name ?? null!;
+        this.description = sheet?.description;
+        this.tags = sheet?.tags?.map(t => t.wording);
+        this.link = sheet?.link ?? null!;
+        this.image = sheet?.image;
+        this.usage = sheet?.usage;
     }
 }
 

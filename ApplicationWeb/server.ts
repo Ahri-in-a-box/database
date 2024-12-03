@@ -65,9 +65,9 @@ class Server {
         const app = express();
         app.use(express.json());
         app.use(compression());
-        app.use(serveStatic(__dirname + '/wwwroot'));
+        app.use(serveStatic(__dirname + '/../../ApplicationWeb' + '/wwwroot'));
 
-        app.set('views', __dirname + '/Views');
+        app.set('views', __dirname + '/../../ApplicationWeb' + '/Views');
         app.set('view engine', 'ejs');
 
         const controllersHandler = new ControllersHandler();

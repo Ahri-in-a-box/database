@@ -1,4 +1,3 @@
-import { Op } from "sequelize";
 import { Nullable } from "../../Business/Dependencies/utils";
 import { database } from "../database";
 import { Repository } from "../Dependencies/repository";
@@ -22,7 +21,6 @@ class SheetsRepository extends Repository {
         limit: number,
         last?: string
     }): Promise<Sheet[]> {
-        console.log(getSheetsCommand.tags);
         let sheets: Sheet[] = await this._dbContext.Sheets.findAll({
             include: {
                 model: this._dbContext.Tags,
@@ -57,6 +55,7 @@ class SheetsRepository extends Repository {
         image?: string;
         usage?: string;
     }): Promise<Nullable<string>> {
+        delete (createSheetCommand as any).id;
         return await this._dbContext.Sheets.create<SheetModel>(createSheetCommand).then(x => x.dataValues.id);
     }
 
